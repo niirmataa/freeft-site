@@ -5,3 +5,5 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}@media print{body{background:white;color:#111}.header{position:static}.hero-visual{display:none}.hero{display:block}.map-detail,.map-node,.source-card{background:white;color:#111}.wrap{width:100%}.filters,.sort-label,#copy-build{display:none}a{overflow-wrap:anywhere}h2,h3{break-after:avoid}.event,.source-card{break-inside:avoid}}
 
 .brand-image{display:block;border-radius:8px;object-fit:contain}.hero-emblem{display:block;width:100%;height:auto}.hero-visual{background:#082441}.visual-caption{padding:22px 10px 0;margin-bottom:24px}.visual-top,.visual-bottom{background:#0a1729}.hero-visual:before{display:none}
+
+.map-node[data-node="publicSampler"]{grid-column:1/-1}

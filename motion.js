@@ -17,7 +17,7 @@
   function renderTimeline() {
     const events = PROJECT_EVENTS.filter(event => filter === 'all' || event.type === filter).sort((a,b) => (sort.value === 'asc' ? 1 : -1) * a.order.localeCompare(b.order));
     document.getElementById('timeline').innerHTML = events.map(event => `<article class="event" id="event-${esc(event.id)}"><div class="event-date">${esc(event.date)}<small>${esc(event.meta)}</small></div><div class="event-content"><div class="event-top"><h3>${esc(event.title)}</h3><span class="status ${esc(event.color)}">${esc(event.status)}</span></div><p>${esc(event.text)}</p><details><summary>Zakres wyniku i źródło</summary><div><p>${esc(event.detail)}</p><a class="source-link" href="${esc(event.url)}">Sprawdź materiał w repozytorium ↗</a></div></details></div></article>`).join('');
-    document.getElementById('timeline-count').textContent = `${events.length} z ${PROJECT_EVENTS.length} wybranych punktów historii · snapshot 10.10.2026`;
+    document.getElementById('timeline-count').textContent = `${events.length} z ${PROJECT_EVENTS.length} wybranych punktów historii · snapshot ${SNAPSHOT_LABEL}`;
   }
   filters.forEach(button => button.addEventListener('click',() => { filter = button.dataset.filter; filters.forEach(item => {const active = item === button;item.classList.toggle('active',active);item.setAttribute('aria-pressed',String(active));});renderTimeline(); }));
   sort.addEventListener('change',renderTimeline);
