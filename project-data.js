@@ -1,23 +1,23 @@
 'use strict';
 const REPO = "https://github.com/niirmataa/free_falcon_sign";
-const SNAPSHOT = "16ba00be37be1cff7feb289af422d2b6022a3f2a";
-const SNAPSHOT_LABEL = '15.10.2026 · 21:57 CEST';
+const SNAPSHOT = "09ef5c61a1474bf00c850b8bcf4e09822a68e493";
+const SNAPSHOT_LABEL = '18.10.2026 · 11:44 CEST';
 const PROJECT_NODES = {
   "keygen": {
     "eyebrow": "AKTUALNY FRONT / WYKONANIE ŹRÓDŁOWE KEYGEN",
-    "title": "Cała środkowa część pierwszego FFT.",
-    "body": "Po wcześniejszym losowaniu f/g, konwersjach FPR i pierwszej pętli FFT domknięto wszystkie osiem środkowych przebiegów rt1. Generyczne dowody motylka, grupy i kroku zewnętrznego składają się przez indukcję, z zachowaniem dokładnego symbolicznego obrazu bufora i zakresów zmiennych. Stan końcowy ma t = 3 i m = 512. Dla gałęzi potrajania gotowe są źródłowe składniki MUL/SQR.",
-    "remaining": "Złożyć ciało i 256 iteracji gałęzi potrajania, następnie FFT rt2 oraz dalsze bramki i wywołania KeyGen. Pełny udany przebieg i dodatnia masa sukcesu skorygowanego prawa pozostają otwarte.",
-    "scope": "B1.07–09: PASS_SCOPED. Kroki #140–145: PROVED_KERNEL_SCOPED / NOT_REVIEWED; audyty własne. Generyczne lematy mają jawne warunki wejścia, a ich obecne zastosowanie dotyczy przypiętego seed9. #145 obejmuje sześć miejsc MUL i jedno SQR; całe pierwsze FFT jeszcze nie jest domknięte.",
-    "url": "https://github.com/niirmataa/free_falcon_sign/blob/16ba00be37be1cff7feb289af422d2b6022a3f2a/proofs/ft1536/development/T12_1/source3/WORK_STATE.md"
+    "title": "Od pełnych FFT do publicznej NTT.",
+    "body": "Dla przypiętego seed9 domknięto oba rzeczywiste wywołania FFT oraz akceptację pierwszej bramki normy i bramki Gram–Schmidta. W torze obliczania klucza publicznego zbudowano generyczne wykonanie całej transformacji NTT: generator tabel, wszystkie przebiegi, sprzątanie zakresów i wywołanie przez oryginalny wrapper.",
+    "remaining": "Zastosować konstrukcję do obu konkretnych wywołań h/t, domknąć testy niezerowości, dzielenie, transformację odwrotną i powrót. Dalej pozostają solver, certyfikat i kodowanie — aż do pełnego udanego KeyGen i dodatniej masy sukcesu.",
+    "scope": "#167: PROVED_KERNEL_SCOPED / PARTIAL_PROOF / NOT_REVIEWED. Generyczny forward wynika z jawnych warunków legalnej pamięci i parametrów; wykonanie wywoływanej funkcji nie jest założeniem. Konkretne zastosowanie pozostaje otwarte w tym snapshotcie. Audyty nowych etapów są własne.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/source3/notes/run/KEYGEN_PUBLIC_FORWARD_167_REPORT.md"
   },
   "reduction": {
     "eyebrow": "MATEMATYCZNY RDZEŃ / KLASYCZNY ROM",
-    "title": "Wyzwanie z ROM-u, taśma dla szumu.",
-    "body": "Warunkowa redukcja EUF-CMA → MT-ISIS zachowuje konkretny reduktor i jawne straty. Korekta F04 rozdziela wyzwanie z ROM-u od taśmy samplera; F05 rozlicza właściwy nośnik i zera poza włóknem. Po korekcie granicy zaufania pakiet 166 modułów otrzymał PASS_SCOPED.",
-    "remaining": "Źródłowy sampler i rzeczywiste do_sign muszą spełnić interfejsy tej gry. F06 oraz końcowe połączenie z prawem emitowanych kluczy i bajtami pozostają otwarte.",
-    "scope": "Odbiór F04/F05 dotyczy określonego zakresu i świadectw; nie był nowym pełnym replayem ani odbiorem bezpieczeństwa całej implementacji.",
-    "url": "https://github.com/niirmataa/free_falcon_sign/blob/16ba00be37be1cff7feb289af422d2b6022a3f2a/proofs/ft1536/development/T12_1/run2/notes/B4_SYNTHESIS.md"
+    "title": "Warunkowa redukcja i publiczna symulacja.",
+    "body": "Warunkowa redukcja EUF-CMA → MT-ISIS zachowuje konkretny reduktor i jawne straty. F04/F05 mają odbiór określonego zakresu. Istnieją też CompPrg i AssemblyComp: porównanie całej publicznej symulacji dla ograniczonej klasy testów oraz rzeczywiście użyte powiązanie praw klucza.",
+    "remaining": "Zrealizować przesłanki przez źródłowe Sign i cały transkrypt przy tym samym sekrecie oraz stanie RNG. Dołączyć właściwy horyzont losowości i koszty, zachowując zakres publicznej symulacji i gry uczciwego podpisywania.",
+    "scope": "Audyty z 15 października uzgodniły pokrycie: stary predykat ChaCha20PRFBound opisuje TV, a ograniczony interfejs CompPRGBound już istnieje. Końcowy argument o rzeczywistym C pozostaje INCOMPLETE. Odbiory zakresowe zachowują swoje historyczne granice.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/run2/notes/B4_SYNTHESIS.md"
   },
   "sampler": {
     "eyebrow": "ROZKŁADY / MODELE ILOŚCIOWE",
@@ -25,7 +25,7 @@ const PROJECT_NODES = {
     "body": "Odebrany T01 składa region do 16 prób po H2P w modelu IID. Rachunek rozkładów rozróżnia nieuwarunkowane sample-then-check i próby warunkowane na zaakceptowany region. F05 precyzuje ograniczenia punktowe na właściwym nośniku.",
     "remaining": "To wykonanie źródłowe musi rozstrzygnąć, który AttemptShape jest realizowany. Dwa warianty mają różne przesłanki i straty; nie są zamiennymi deklaracjami bezpieczeństwa.",
     "scope": "T01: WholeRegionBad ≤ 2⁻⁸⁰ w G_retry_IID. Manuskrypt: e₂(k) < 2⁻³² lub e₂(k_cond) < 2⁻¹⁷ przy odpowiednich przesłankach. Wykładniki nie oznaczają poziomu bezpieczeństwa schematu.",
-    "url": "https://github.com/niirmataa/free_falcon_sign/blob/16ba00be37be1cff7feb289af422d2b6022a3f2a/proofs/ft1536/paper/sec_06_sampler.tex"
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/paper/sec_06_sampler.tex"
   },
   "bytes": {
     "eyebrow": "INTERFEJS / KODOWANIE / ODBIÓR B1.07–09",
@@ -33,31 +33,31 @@ const PROJECT_NODES = {
     "body": "Domknięto lokalne kodeki NONE i STATIC, transport między wektorami a układem int16 oraz odczyt publicznego klucza. Odbiór z 14 października potwierdził warunkową zgodność sekretu z nagłówkiem 0xaa i publicznego pakietu 2881 bajtów dla tego samego zaakceptowanego materiału.",
     "remaining": "Warunkowy łańcuch kodowania trzeba zrealizować przez pełny udany przebieg rzeczywistego KeyGen. Globalne połączenie z podpisywaniem i obserwacjami gry nadal wymaga domknięcia.",
     "scope": "PASS_SCOPED: model C99/GCC LP64, świeży replay 45/45 i odrzucone mutacje. Nie dowodzi realnego sukcesu KeyGen ani bezpieczeństwa Sign.",
-    "url": "https://github.com/niirmataa/free_falcon_sign/blob/16ba00be37be1cff7feb289af422d2b6022a3f2a/proofs/ft1536/development/T12_1/run2/notes/B4_SYNTHESIS.md"
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/run2/notes/B4_SYNTHESIS.md"
   },
   "security": {
     "eyebrow": "CEL / PEŁNY ARGUMENT",
     "title": "Jeden schemat, jawne zależności.",
-    "body": "Celem pozostaje jeden eksperyment wiążący źródłowy generator, rozkład emitowanych kluczy, Sign i wynikowe bajty. Korekta modelu KeyGen oraz kolejne świadectwa wykonania rozwijają ten łańcuch; osobny tor S05 buduje publiczny sampler.",
-    "remaining": "Pełne udane wykonanie KeyGen i dodatnia masa sukcesu, realizacja do_sign, właściwe związanie PRG i końcowe interfejsy bajtowe. S06 nadal wymaga korekt. Dla S05 otwarte są pełne zasoby, źródłowe przesłanki i redukcja QROM.",
-    "scope": "Warunkowe i lokalne wyniki zachowują swoje zakresy. Bez deklaracji pełnego bezpieczeństwa implementacji, certyfikowanego poziomu bitowego lub bezpieczeństwa w QROM.",
-    "url": "https://github.com/niirmataa/free_falcon_sign/blob/16ba00be37be1cff7feb289af422d2b6022a3f2a/proofs/ft1536/development/T12_1/source3/WORK_STATE.md"
+    "body": "Celem pozostaje jeden eksperyment wiążący źródłowy KeyGen, prawo emitowanych kluczy, Sign i wynikowe bajty. Adapter KeygenModelBinding134 oraz konsument dodatniej masy już istnieją. Trwa konstrukcja konkretnego udanego wykonania, które pozwoli je zastosować.",
+    "remaining": "Pełny świadek sukcesu i dodatnia masa; właściwe powiązanie prawa emisji z prawem prób; rzeczywisty Sign ze wspólnym sekretem i RNG; słowa bramki T5 pochodzące z tego samego klucza. Osobno pozostają S06, pełne zasoby S05 i redukcja QROM.",
+    "scope": "Próba analitycznego dodatniego ograniczenia Z zakończyła się wynikiem częściowym, z zachowaniem uzyskanych lematów. Nie wykazano jeszcze dodatniej liczbowej granicy dla rzeczywistego prawa seedów. Ogólny cel bezpieczeństwa implementacji pozostaje otwarty.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/source3/notes/run/KEYGEN_Z_LOWER_134_REPORT.md"
   },
   "paper": {
     "eyebrow": "PUBLIKACJA / RESEARCH DRAFT 0.3",
     "title": "Manuskrypt i żywa historia wyników.",
-    "body": "Draft v0.3 Niirmaty pozostaje bazą artykułu. Nowsze wyniki i odbiory są zapisane w notatkach rozwoju. Przegląd pakietu A1 wykazał konieczność selektywnego włączenia treści z zachowaniem aktualnych statusów i powiązań źródłowych.",
+    "body": "Draft v0.3 Niirmaty pozostaje bazą artykułu, a nowsze wyniki i odbiory są zapisane w notatkach rozwoju. Zachowano wcześniejszy przegląd A1. Przygotowano także zlecenie przeglądu R2; w tym publicznym snapshotcie nie ma jego końcowego werdyktu.",
     "remaining": "Uzgodnić manuskrypt z najnowszymi zakresami, zakończyć porównanie z literaturą i przygotować kompletny publiczny pakiet odtworzeniowy. Końcowe twierdzenie zależy od domknięcia pozostałych interfejsów.",
-    "scope": "Przygotowanie do ePrint. Aktualizacja strony nie oznacza nowej wersji dowodu ani nowego replayu Lean/Sage. Historyczny draft i raporty pozostają zachowane.",
-    "url": "https://github.com/niirmataa/free_falcon_sign/blob/16ba00be37be1cff7feb289af422d2b6022a3f2a/proofs/ft1536/development/T12_1/run2/notes/B4_SYNTHESIS.md"
+    "scope": "Przygotowanie do ePrint. Od poprzedniego snapshotu nie zmieniono śledzonych źródeł manuskryptu. Aktualizacja witryny jest relacją z raportów i nie stanowi nowego replayu Lean/Sage ani odbioru dowodów.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/run2/notes/B4_SYNTHESIS.md"
   },
   "publicSampler": {
     "eyebrow": "OSOBNY TOR / S05 / PUBLICZNY SAMPLER",
-    "title": "Pełne publiczne wywołanie samplera.",
-    "body": "Połączono przygotowanie danych i parser, zapisany program startowy, konsumenta poleceń, surowy rdzeń i odbiór wyniku. Przy publicznym stanie początkowym zachowano zgodność na każdej taśmie oraz całe prawo odpowiedzi, włącznie z porażkami.",
-    "remaining": "Źródłowe pokrycie warunku masy (M), rzeczywiste KeyGen/Sign/PRG, jednolity backend, pełny czas i szczyt pamięci oraz kompozycja QROM. Najnowszy etap oczekuje niezależnego odbioru.",
-    "scope": "020E12: KERNEL_SCOPED / CONDITIONAL_M / NOT_REVIEWED. Ograniczenie drugiego momentu J/P ≤ 1 + 2⁻⁴⁷ wymaga tego samego (M). Zachowano certyfikat wcześniejszego modelu; nie jest to gotowe połączenie z ROM-A ani dowód QROM.",
-    "url": "https://github.com/niirmataa/free_falcon_sign/blob/16ba00be37be1cff7feb289af422d2b6022a3f2a/proofs/ft1536/development/S05_QROM/notes/PUBLIC_CALL_020E12_CHECKPOINT.md"
+    "title": "Prawo wywołania i liczniki rdzenia.",
+    "body": "Pełne publiczne wywołanie zachowuje prawo odpowiedzi i porażki. Dołączono instrumentację rdzenia zgodną z wynikiem dla każdej taśmy: dokładnie 14 733 cykle producentów i 32 przejścia konsumenta na rundę, wraz z granicami skanów, zapisów i zatrzymania.",
+    "remaining": "Wycenić prymitywy, przygotowanie, kopie i odczyt, a następnie pełny czas i pamięć szczytową. Nadal potrzebne są źródłowy warunek masy (M), pokrycie kluczy, rzeczywiste KeyGen/Sign/PRG i kompozycja QROM.",
+    "scope": "020E13: KERNEL_SCOPED_COUNTS / NOT_REVIEWED. Są to liczniki zdarzeń rdzenia modelu. Warunkowy wynik 020E12 z momentem J/P ≤ 1 + 2⁻⁴⁷ zachowuje to samo (M); pełne koszty i QROM pozostają otwarte.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/S05_QROM/notes/EXECUTION_COUNTS_020E13_CHECKPOINT.md"
   }
 };
 const PROJECT_EVENTS = [
@@ -468,7 +468,7 @@ const PROJECT_EVENTS = [
     "id": "fft-tripling-ingredients",
     "date": "15.10.2026",
     "order": "2026-10-15T19:57:43",
-    "meta": "KEYGEN / FFT #145 · FRONT PRAC",
+    "meta": "KEYGEN / FFT #145 · SKŁADNIKI POTRAJANIA",
     "type": "proof",
     "status": "LOKALNIE · NOT_REVIEWED",
     "color": "blue",
@@ -476,5 +476,187 @@ const PROJECT_EVENTS = [
     "text": "Uogólniono źródłowe mnożenie zespolone i powiązano wszystkie sześć jego miejsc w gałęzi potrajania. Osobny dowód kwadratu w miejscu zachowuje oryginalną kolejność operacji i przywraca zmienne tymczasowe.",
     "detail": "PROVED_KERNEL_SCOPED / NOT_REVIEWED. Audyt własny objął 93 deklaracje z zaakceptowanymi logami 0/0. Opcjonalnej ogólnej równości ekspandera nie przyjęto i nie użyto jako przesłanki; bezpośrednie powiązania sześciu miejsc przeszły. Raport zachowuje wszystkie 13 jobów, w tym 7 nieudanych lub mieszanych. Odczyty, sześć ADD, całe ciało i pętla 256 iteracji pozostają otwarte; stan wykonanego FFT nadal kończy się na #144.",
     "url": "https://github.com/niirmataa/free_falcon_sign/blob/16ba00be37be1cff7feb289af422d2b6022a3f2a/proofs/ft1536/development/T12_1/source3/notes/run/KEYGEN_FFT_TRIPLE_145_REPORT.md"
+  },
+  {
+    "id": "s05-core-counts",
+    "date": "15.10.2026",
+    "order": "2026-10-15T21:13:38",
+    "meta": "S05 / 020E13",
+    "type": "proof",
+    "status": "LOKALNIE · NOT_REVIEWED",
+    "color": "blue",
+    "title": "Dokładne liczniki wykonania rdzenia",
+    "text": "Instrumentacja zachowuje wynik pełnego publicznego wywołania dla każdej taśmy, także przy błędach i abortach. Udowodniono 14 733 cykle producentów i 32 przejścia konsumenta na rundę oraz osobne granice skanów, zapisów i zatrzymania.",
+    "detail": "KERNEL_SCOPED_COUNTS / NOT_REVIEWED. Liczniki dotyczą rdzenia modelu; pełny czas, ceny prymitywów, przygotowanie i pamięć szczytowa pozostają otwarte. Zachowano warunek (M), wcześniejsze prawo odpowiedzi i nieudane próby. Nie jest to zakończenie redukcji QROM.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/S05_QROM/notes/EXECUTION_COUNTS_020E13_CHECKPOINT.md"
+  },
+  {
+    "id": "integration-audit",
+    "date": "15.10.2026",
+    "order": "2026-10-15T21:19:16",
+    "meta": "AUDYT / KOŃCOWE POŁĄCZENIE",
+    "type": "proof",
+    "status": "INCOMPLETE",
+    "color": "amber",
+    "title": "Audyt wskazuje zobowiązania końcowej gry",
+    "text": "Audyt oznaczył końcowy argument o rzeczywistym C jako INCOMPLETE. Wskazał potrzebę porównania całej gry z modelem przy tym samym wyemitowanym kluczu i stanie generatora.",
+    "detail": "Zachowano uwagi o RNG, wspólnym prawie kolejnych podpisów, słowach bramki T5 i prawie KeyGen. Pokrycie oraz nowość jednego ustalenia zostały skorygowane w kolejnym wpisie: „Korekta audytu uwzględnia istniejące mosty”. Własny pełny replay Lean nie został zakończony; nie nadano kernelowego PASS.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/run2/notes/B4_SYNTHESIS.md#L921"
+  },
+  {
+    "id": "audit-reconciliation",
+    "date": "15.10.2026",
+    "order": "2026-10-15T21:48:38",
+    "meta": "AUDYT / KOREKTA POKRYCIA",
+    "type": "proof",
+    "status": "UZGODNIONO ZAKRES",
+    "color": "blue",
+    "title": "Korekta audytu uwzględnia istniejące mosty",
+    "text": "Drugi audyt uwzględnił CompPrg, AssemblyComp i KeygenModelBinding134. Problem TV/PRG był już wcześniejszym F06 z 11 października. Doprecyzowano granicę między publiczną symulacją a rzeczywistym Sign.",
+    "detail": "Istnieją ograniczona klasa testów, porównanie całej publicznej symulacji i adapter prawa kluczy. Otwarta jest realizacja źródłowa i wspólne prawo transkryptu. ChaCha jest inicjalizowany wewnątrz pętli prób; kontrakt musi rozliczyć nonce, seedy, retry/abort/emit oraz kolejne zapytania. Poprzedni raport i jego ograniczenia zachowano; pełny niezależny replay pozostaje osobną kontrolą.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/run2/notes/B4_SYNTHESIS.md#L951"
+  },
+  {
+    "id": "fft-tripling-body",
+    "date": "15.10.2026",
+    "order": "2026-10-15T21:56:05",
+    "meta": "KEYGEN / FFT #146–147",
+    "type": "proof",
+    "status": "LOKALNIE · NOT_REVIEWED",
+    "color": "blue",
+    "title": "Pełne ciało gałęzi potrajania",
+    "text": "Do źródłowych MUL/SQR dołączono wszystkie ADD, sześć odczytów bufora, odczyty tabeli i oryginalny przepływ danych. Generyczny dowód obejmuje całe ciało z sześcioma uporządkowanymi zapisami i odtworzeniem zakresu zmiennych.",
+    "detail": "PROVED_KERNEL_SCOPED / NOT_REVIEWED. Zachowano dokładny symboliczny obraz bufora i ramkę pamięci. Na tym etapie całe ciało było gotowe, lecz sterowanie pętli i konkretne 256 iteracji pozostawały do złożenia. Nieudane próby i podzielony audyt deklaracji są w raporcie.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/source3/notes/run/KEYGEN_FFT_INPUTS_147_REPORT.md"
+  },
+  {
+    "id": "fft-calls-raw-norm",
+    "date": "15–16.10.2026",
+    "order": "2026-10-15T22:11:22",
+    "meta": "KEYGEN / FFT I NORMA #148–153",
+    "type": "proof",
+    "status": "LOKALNIE · NOT_REVIEWED",
+    "color": "blue",
+    "title": "Oba rzeczywiste FFT i pierwsza bramka normy",
+    "text": "Indukcja zamknęła 256 iteracji potrajania i powrót pierwszego FFT. Generyczne reguły zastosowano następnie do drugiego wywołania. Z oboma obrazami buforów połączono obliczenie normy i sprawdzono jej akceptację dla przypiętego seed9.",
+    "detail": "PROVED_KERNEL_SCOPED / NOT_REVIEWED. Etapy obejmują oba pełne wywołania, symboliczne obrazy, indeksowane wartości i kernelowe sprawdzenie słów potrzebnych do bramki. Porównanie normy zostało wyprowadzone, a nie przyjęte jako przesłanka. Zachowano wcześniejsze kandydaty liczbowe i nieudane próby. Daty commitów tej serii są niemonotoniczne; wpis grupuje etapy według zależności i końcowego checkpointu #153.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/source3/notes/run/KEYGEN_FFT_CELLS_153_REPORT.md"
+  },
+  {
+    "id": "gs-gate-accepted",
+    "date": "16.10.2026",
+    "order": "2026-10-15T23:46:36",
+    "meta": "KEYGEN / GRAM–SCHMIDT #154–156",
+    "type": "proof",
+    "status": "LOKALNIE · NOT_REVIEWED",
+    "color": "blue",
+    "title": "Obliczenie GS i akceptacja jego bramki",
+    "text": "Połączono źródłowe dzielenie, odwrotności norm, sprzężenia, skalowania i mnożenia przez autoadjoint. Kernelowe sprawdzenie dokładnych słów zamknęło bramkę Gram–Schmidta tego samego wybranego przebiegu.",
+    "detail": "PROVED_KERNEL_SCOPED / NOT_REVIEWED. Akceptacja wynika z konkretnych słów FPEMU bez dodatkowego założenia o wyniku porównania. Osiągnięto wejście do obliczania klucza publicznego. Wynik nie ustala częstości sukcesu dla wszystkich seedów ani pełnego sukcesu KeyGen; historia nieudanych prób pozostaje w raportach.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/source3/notes/run/KEYGEN_GS_CELLS_156_REPORT.md"
+  },
+  {
+    "id": "public-conversion-front",
+    "date": "16.10.2026",
+    "order": "2026-10-16T16:40:59",
+    "meta": "KEYGEN / PUBLIC #157–159",
+    "type": "proof",
+    "status": "CZĘŚCIOWO · NOT_REVIEWED",
+    "color": "blue",
+    "title": "Konwersja publiczna i pierwsza granica generatora",
+    "text": "Związano wejście wywołania publicznego z rzeczywistymi bajtami samplera, wykonano pełną konwersję 1536 współczynników i rozwinięto warstwę wywołań NTT. Domknięto także prolog generatora tabel z jego początkową pętlą.",
+    "detail": "PARTIAL_PROOF / NOT_REVIEWED. Pełne wywołania forward wciąż wymagały dostarczenia wykonania generatora i dalszych przebiegów. Raport zachowuje osiągnięty stan, nieudane próby i otwarte regiony prowadzące do solvera, certyfikatu i kodowania. Dalsze wpisy pokazują ich stopniowe uzupełnianie.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/source3/notes/run/KEYGEN_PUBLIC_FORWARD_159_REPORT.md"
+  },
+  {
+    "id": "positive-mass-wall",
+    "date": "17.10.2026",
+    "order": "2026-10-17T10:07:04",
+    "meta": "KEYGEN / MODE1 I Z_LOWER_134",
+    "type": "proof",
+    "status": "CZĘŚCIOWO · OTWARTA GRANICA",
+    "color": "amber",
+    "title": "Prawo MODE1 i granica próby analitycznej",
+    "text": "Wyprowadzono warunkowe prawo współczynnika MODE1 i transfer odchylenia oraz domknięto przejście od dodatniej masy do pakietu prawa kluczy. Dodatnia masa akceptacji pierwszej próby jest równoważna istnieniu akceptowanego seedu.",
+    "detail": "PARTIAL_PROOF / STOP_AND_REPORT / NOT_REVIEWED. Dla jednostajnych chunków marginal ma wartości 1/3; rzeczywiste prawo chunków SHAKE i zależności nadal wymagają uzasadnienia. Nie uzyskano dodatniego liczbowego epsilon dla rzeczywistego prawa seedów. Równoważność z istnieniem świadka sama nie porównuje trudności metod dowodowych. Zachowano wynik częściowy i kontynuowano tor konkretnego świadka R1.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/source3/notes/run/KEYGEN_Z_LOWER_134_REPORT.md"
+  },
+  {
+    "id": "r1-generator-suffix",
+    "date": "17.10.2026",
+    "order": "2026-10-17T15:19:54",
+    "meta": "KEYGEN / R1 · REGION 1d",
+    "type": "proof",
+    "status": "LOKALNIE · NOT_REVIEWED",
+    "color": "blue",
+    "title": "Pełny sufiks generatora tabel",
+    "text": "Złożono pętlę wierszy, pętlę górną, schodzącą pętlę kwadratów i końcowe zapisy generatora. Uzyskano wykonanie sufiksu i zapisany zakres 0…1023 w obu tabelach.",
+    "detail": "PARTIAL_PROOF / NOT_REVIEWED. Niezmiennik WrittenRange opisuje zapisane i dostępne komórki; nie zastępuje samodzielnie twierdzenia o wszystkich wartościach wielomianowych. Region 1d został zamknięty, a pozostały przebiegi transformacji i dalszy KeyGen. Zachowano nieudane próby konstrukcji i składni.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/source3/notes/run/KEYGEN_SEED9_R1_REPORT.md"
+  },
+  {
+    "id": "historical-seal-recovery",
+    "date": "18.10.2026",
+    "order": "2026-10-18T08:00:45",
+    "meta": "HISTORIA / UZGODNIENIE PINÓW",
+    "type": "proof",
+    "status": "UZGODNIONO PROWENIENCJĘ",
+    "color": "blue",
+    "title": "Jawne uzgodnienie historycznej pieczęci",
+    "text": "Przy wznowieniu wykryto rozjazd starego manifestu z dwiema później zmienionymi wersjami dokumentów. Zatrzymano pracę, zachowano wynik kontroli i odtworzono pierwotne bajty z przypiętej historii Git.",
+    "detail": "Raport nie stwierdził rozjazdu sprawdzonych przez te manifesty źródeł Lean. Po decyzji właściciela dodano historyczne snapshoty i osobny receipt uzgodnienia; stare manifesty oraz bieżące dokumenty pozostały zachowane. Pierwotny wynik mismatch nadal jest częścią historii. Nowy checkpoint umożliwił kontynuację R1.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/source3/notes/run/KEYGEN_R1_RESUME_20261018.md"
+  },
+  {
+    "id": "ntt-prefix-complete",
+    "date": "18.10.2026",
+    "order": "2026-10-18T08:53:11",
+    "meta": "KEYGEN / PUBLIC NTT #160–164",
+    "type": "proof",
+    "status": "LOKALNIE · NOT_REVIEWED",
+    "color": "blue",
+    "title": "Pierwszy przebieg i osiem rund środkowych NTT",
+    "text": "Konstrukcyjne reguły wykonania połączono indukcją przez 768 iteracji pierwszego przebiegu, pętle wewnętrzne, grupy i osiem rund środkowych. Złożony prefiks zachowuje czytelność komórek i potrzebne wiązania pamięci.",
+    "detail": "PROVED_KERNEL_SCOPED / PARTIAL_PROOF / NOT_REVIEWED. Źródłowy dowód ma jawne domeny pamięci i liczników, obejmuje rzeczywiste aktualizacje oraz końcowe warunki pętli. Pozostała końcowa pętla potrajania i zastosowanie do konkretnych wywołań. Nieudane próby są zachowane w raportach #160–163.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/source3/notes/run/KEYGEN_PUBLIC_PREFIX_164_REPORT.md"
+  },
+  {
+    "id": "ntt-tail-complete",
+    "date": "18.10.2026",
+    "order": "2026-10-18T09:16:45",
+    "meta": "KEYGEN / PUBLIC NTT #165",
+    "type": "proof",
+    "status": "LOKALNIE · NOT_REVIEWED",
+    "color": "blue",
+    "title": "512 iteracji zamyka gałąź potrajania NTT",
+    "text": "Zbudowano oryginalne ciało potrojenia i jego 512 iteracji wraz z inicjalizacją, licznikami i wyjściem. Z wcześniejszym prefiksem daje to konstrukcyjne wykonanie całego ogona transformacji publicznej.",
+    "detail": "PROVED_KERNEL_SCOPED / PARTIAL_PROOF / NOT_REVIEWED. Pozostają jawne warunki wejściowych tablic, komórek i tabeli cubic. Pełny generator, alokacja i wywołujący są składane w kolejnych etapach. Nie jest to jeszcze pełne obliczenie klucza publicznego ani świadek sukcesu KeyGen.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/source3/notes/run/KEYGEN_PUBLIC_TRIPLE_165_REPORT.md"
+  },
+  {
+    "id": "ntt-generator-complete",
+    "date": "18.10.2026",
+    "order": "2026-10-18T09:32:07",
+    "meta": "KEYGEN / PUBLIC NTT #166",
+    "type": "proof",
+    "status": "LOKALNIE · NOT_REVIEWED",
+    "color": "blue",
+    "title": "Cały generator z oryginalnym wyjściem z zakresu",
+    "text": "Istniejące pętle generatora połączono z prologiem, sterowaniem i odtworzeniem oryginalnego zakresu zmiennej b. Wynik konstrukcyjnie dostarcza zapisany zakres 0…1023 w obu tabelach, potrzebny dalszemu wywołaniu.",
+    "detail": "PROVED_KERNEL_SCOPED / PARTIAL_PROOF / NOT_REVIEWED. Trzy moduły i 14 deklaracji przeszły audyt własny z czystymi zaakceptowanymi logami. Korektę licznika w kontroli wejścia zachowano oddzielnie. Następny etap wyprowadza domeny świeżych tablic i składa generator z transformacją.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/source3/notes/run/KEYGEN_PUBLIC_GENERATOR_166_REPORT.md"
+  },
+  {
+    "id": "public-forward-constructive",
+    "date": "18.10.2026",
+    "order": "2026-10-18T09:44:51",
+    "meta": "KEYGEN / PUBLIC FORWARD #167 · FRONT PRAC",
+    "type": "proof",
+    "status": "LOKALNIE · NOT_REVIEWED",
+    "color": "blue",
+    "title": "Całe wywołanie forward z legalnej pamięci",
+    "text": "Połączono alokację, kompletny generator, cały ogon NTT, oba wyjścia z zakresów i oryginalny wrapper mq_NTT. Wykonanie wywoływanej funkcji wynika z dowodu; nie jest przyjmowane jako przesłanka.",
+    "detail": "PROVED_KERNEL_SCOPED / PARTIAL_PROOF / NOT_REVIEWED. Cztery moduły i 22 deklaracje przeszły audyt własny. Pozostają legalna pamięć wywołującego i wiązania parametrów. Oba konkretne wywołania h/t są następnym krokiem; testy niezerowości, dzielenie, inverse, solver, certyfikat, kodowanie i pełny G(seed*) pozostają otwarte w tym snapshotcie.",
+    "url": "https://github.com/niirmataa/free_falcon_sign/blob/09ef5c61a1474bf00c850b8bcf4e09822a68e493/proofs/ft1536/development/T12_1/source3/notes/run/KEYGEN_PUBLIC_FORWARD_167_REPORT.md"
   }
 ];

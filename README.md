@@ -28,3 +28,25 @@ równość ekspandera. Nowe kroki mają PROVED_KERNEL_SCOPED / NOT_REVIEWED;
 cytowane audyty są audytami własnymi autora. Całe pierwsze FFT, rt2 i pełny
 udany KeyGen pozostają otwarte. W S05 i run2 brak zmian względem poprzedniego
 snapshotu. Aktualizacja strony nie obejmuje nowego replayu Lean/Sage.
+
+## Snapshot 18 października 2026
+
+Publiczne źródła: `09ef5c61a1474bf00c850b8bcf4e09822a68e493` (11:44 CEST).
+Dodano 14 punktów historii, łącznie 46; zachowano treść, statusy i źródła
+wszystkich 32 wcześniejszych wpisów. Dawny znacznik frontu #145 zastąpiono
+historyczną etykietą składników potrajania.
+
+Aktualizacja obejmuje obie FFT i bramki norm dla seed9, postęp konstrukcyjnej
+publicznej NTT do #167, liczniki S05, audyt integracyjny i korektę jego pokrycia,
+częściowy wynik Z_LOWER134 oraz odzyskanie historycznych pinów.
+Całe generyczne wywołanie forward #167 jest udowodnione przy jawnej legalnej
+pamięci; jego dwa konkretne zastosowania pozostają poza tym snapshotem.
+Pełny KeyGen, dodatnia liczbowa masa sukcesu i połączenie z realnym Sign są
+otwarte. Zachowano NOT_REVIEWED i odrębność publicznej symulacji od Sign.
+
+Daty części commitów #148–153 są niemonotoniczne względem przodków Git.
+Etapy połączono we wpis 15–16 października, z porządkiem końcowego checkpointu
+#153; nie dopisano fikcyjnych godzin. Równoważność dodatniej masy i istnienia
+świadka nie jest na stronie przedstawiana jako porównanie trudności metod.
+Źródła manuskryptu nie zmieniły się; zlecenie R2 nie oznacza odebranego review.
+Aktualizacja jest redakcyjna, bez nowego replayu Lean/Sage.
